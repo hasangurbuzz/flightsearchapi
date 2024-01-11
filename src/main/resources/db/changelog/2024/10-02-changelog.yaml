@@ -1,0 +1,50 @@
+databaseChangeLog:
+  - changeSet:
+      id: 0
+      author: hasan
+      changes:
+        - createSequence:
+            sequenceName: t_flight_seq
+            dataType: BIGINT
+            startValue: 1
+            incrementBy: 1
+            cacheSize: 1
+            cycle: false
+        - createTable:
+            tableName: t_flight
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_t_flight
+              - column:
+                  name: departure_airport_id
+                  type: BIGINT
+              - column:
+                  name: arrival_airport_id
+                  type: BIGINT
+              - column:
+                  name: departure_date
+                  type: TIMESTAMP
+              - column:
+                  name: return_date
+                  type: TIMESTAMP
+              - column:
+                  name: price
+                  type: NUMERIC(10,2)
+
+        - addForeignKeyConstraint:
+            constraintName: fk_departure_id_on_airport
+            baseTableName: t_flight
+            baseColumnNames: departure_airport_id
+            referencedTableName: t_airport
+            referencedColumnNames: id
+
+        - addForeignKeyConstraint:
+            constraintName: fk_arrival_id_on_airport
+            baseTableName: t_flight
+            baseColumnNames: arrival_airport_id
+            referencedTableName: t_airport
+            referencedColumnNames: id

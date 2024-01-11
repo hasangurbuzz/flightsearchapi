@@ -1,0 +1,367 @@
+openapi: 3.0.3
+info:
+  title: Flight Search API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/api
+paths:
+  /flights/search:
+    post:
+      tags:
+        - flight
+      summary: Search flights
+      operationId: flight_search
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FlightSearchRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlightSearchResponse'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /flights/create:
+    post:
+      tags:
+        - flight
+      summary: Create flight
+      operationId: flight_create
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FlightCreateRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Flight'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /airports:
+    get:
+      tags:
+        - airport
+      summary: Get all airports
+      operationId: airport_get
+
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Airport'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /airports/create:
+    post:
+      tags:
+        - airport
+      summary: Create airport
+      operationId: airport_create
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AirportCreateRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Airport'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /auth/login:
+    post:
+      tags:
+        - auth
+      summary: Login
+      operationId: auth_login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthLoginRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+
+components:
+  schemas:
+    FlightCreateRequest:
+      type: object
+      required:
+        - departureAirportId
+        - arrivalAirportId
+        - departureDate
+        - returnDate
+      properties:
+        departureAirportId:
+          type: integer
+          format: int64
+        arrivalAirportId:
+          type: integer
+          format: int64
+        departureDate:
+          type: string
+          format: date-time
+        returnDate:
+          type: string
+          format: date-time
+        price:
+          type: number
+          format: double
+
+    AirportCreateRequest:
+      type: object
+      required:
+        - city
+      properties:
+        city:
+          type: string
+
+    FlightSearchRequest:
+      type: object
+      required:
+        - departureAirportId
+        - arrivalAirportId
+        - departureDate
+      properties:
+        departureAirportId:
+          type: integer
+          format: int64
+          nullable: false
+        arrivalAirportId:
+          type: integer
+          format: int64
+        departureDate:
+          type: string
+          format: date
+        returnDate:
+          type: string
+          format: date
+        pageRequest:
+          $ref: '#/components/schemas/PageRequest'
+
+    OnewaySearchResponse:
+      type: object
+      properties:
+        total:
+          type: integer
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Flight'
+
+    Flight:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        departureAirport:
+          $ref: '#/components/schemas/Airport'
+        arrivalAirport:
+          $ref: '#/components/schemas/Airport'
+        departureDate:
+          type: string
+          format: date-time
+        price:
+          type: number
+          format: double
+
+    FlightSearchResponse:
+      oneOf:
+        - $ref: '#/components/schemas/OnewaySearchResponse'
+        - $ref: '#/components/schemas/RoundSearchResponse'
+
+    Airport:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        city:
+          type: string
+
+    RoundSearchResponse:
+      type: object
+      properties:
+        total:
+          type: integer
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoundFlight'
+
+    RoundFlight:
+      type: object
+      properties:
+        departureFlight:
+          $ref: '#/components/schemas/Flight'
+        returnFlight:
+          $ref: '#/components/schemas/Flight'
+
+    AuthLoginRequest:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+
+    Token:
+      type: object
+      properties:
+        value:
+          type: string
+        validUntil:
+          type: string
+          format: date-time
+        role:
+          $ref: '#/components/schemas/Role'
+
+    Role:
+      type: object
+      properties:
+        name:
+          type: string
+          enum: [ADMIN, STANDARD]
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Permission'
+
+    Permission:
+      type: string
+      enum: [READ, WRITE]
+
+    PageRequest:
+      type: object
+      properties:
+        start:
+          type: integer
+          default: 0
+        limit:
+          type: integer
+          default: 20
+        order:
+          $ref: '#/components/schemas/Order'
+
+    Order:
+      type: object
+      properties:
+        sort:
+          $ref: '#/components/schemas/OrderSort'
+        direction:
+          $ref: '#/components/schemas/OrderDirection'
+
+    OrderSort:
+      type: string
+      enum: [PRICE, DATE]
+      default: DATE
+
+    OrderDirection:
+      type: string
+      enum: [ASC, DESC]
+      default: ASC
+
+
+    Error:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        cause:
+          type: string
+
+    ErrorCode:
+      type: string
+      enum: [INVALID_INPUT, NOT_FOUND, SERVER_ERROR, AUTH_ERROR, FORBIDDEN]
+
