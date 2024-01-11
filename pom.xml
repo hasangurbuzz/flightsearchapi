@@ -18,7 +18,7 @@
     </properties>
     <dependencies>
 
-<!--        SPRING BOOT-->
+        <!--        SPRING BOOT-->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -42,7 +42,7 @@
         </dependency>
 
 
-<!--        LIQUIBASE-->
+        <!--        LIQUIBASE-->
 
         <dependency>
             <groupId>org.liquibase</groupId>
@@ -50,7 +50,7 @@
         </dependency>
 
 
-<!--        POSTGRES-->
+        <!--        POSTGRES-->
 
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -59,7 +59,7 @@
         </dependency>
 
 
-<!--        LOMBOK-->
+        <!--        LOMBOK-->
 
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -68,7 +68,7 @@
             <scope>provided</scope>
         </dependency>
 
-<!--        OPENAPI-->
+        <!--        OPENAPI-->
         <dependency>
             <groupId>org.openapitools</groupId>
             <artifactId>openapi-generator-maven-plugin</artifactId>
@@ -86,7 +86,7 @@
             <version>2.2.15</version>
         </dependency>
 
-<!--        QUERYDSL-->
+        <!--        QUERYDSL-->
         <dependency>
             <groupId>com.querydsl</groupId>
             <artifactId>querydsl-apt</artifactId>
@@ -100,7 +100,7 @@
             <classifier>jakarta</classifier>
         </dependency>
 
-<!--        JUNIT-->
+        <!--        JUNIT-->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -115,11 +115,11 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
-            <version>5.8.0  </version>
+            <version>5.8.0</version>
             <scope>test</scope>
         </dependency>
 
-<!--        JWT-->
+        <!--        JWT-->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-api</artifactId>
@@ -138,7 +138,7 @@
             <scope>runtime</scope>
         </dependency>
 
-<!--        SLF4J-->
+        <!--        SLF4J-->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>

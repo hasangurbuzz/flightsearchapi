@@ -1,8 +1,8 @@
 package dev.hasangurbuz.flightsearchapi.api.controller;
 
-import dev.hasangurbuz.flightsearchapi.security.service.impl.JwtService;
 import dev.hasangurbuz.flightsearchapi.security.model.Role;
 import dev.hasangurbuz.flightsearchapi.security.model.User;
+import dev.hasangurbuz.flightsearchapi.security.service.impl.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.openapitools.api.AuthApi;
 import org.openapitools.model.AuthLoginRequestDTO;

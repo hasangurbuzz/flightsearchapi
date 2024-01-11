@@ -16,7 +16,7 @@ public class ApiException extends RuntimeException {
         return new ApiException(ApiExceptionCode.INVALID_INPUT, cause);
     }
 
-    public static ApiException notFound(String cause){
+    public static ApiException notFound(String cause) {
         return new ApiException(ApiExceptionCode.NOT_FOUND, cause);
     }
 

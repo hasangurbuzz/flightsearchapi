@@ -8,7 +8,6 @@ import org.openapitools.api.AirportApi;
 import org.openapitools.model.AirportCreateRequestDTO;
 import org.openapitools.model.AirportDTO;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RestController;
 

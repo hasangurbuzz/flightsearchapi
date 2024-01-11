@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -112,45 +111,5 @@ public class FlightApiController implements FlightApi {
         response.setTotal(flights.getTotal());
 
         return ResponseEntity.ok(response);
-
-
-//        if (!isOneWay) {
-//            List<RoundFlightDTO> roundFlightDTOS = new ArrayList<>(onewayResults.getItems().size());
-//            for (Flight flight : onewayResults.getItems()) {
-//                if (!flight.getReturnDate().toLocalDate().equals(flightSearchRequestDTO.getReturnDate())) {
-//                    continue;
-//                }
-//
-//                RoundFlightDTO dto = new RoundFlightDTO();
-//                FlightDTO returnFlight = new FlightDTO();
-//                returnFlight.setId(flight.getId());
-//                returnFlight.setPrice(flight.getPrice());
-//                returnFlight.setDepartureDate(flight.getReturnDate());
-//                returnFlight.setDepartureAirport(airportMapper.toDto(flight.getArrivalAirport()));
-//                returnFlight.setArrivalAirport(airportMapper.toDto(flight.getDepartureAirport()));
-//                dto.setReturnFlight(returnFlight);
-//                dto.setDepartureFlight(flightMapper.toDto(flight));
-//                roundFlightDTOS.add(dto);
-//
-//
-//            }
-//            RoundSearchResponseDTO response = new RoundSearchResponseDTO();
-//            response.setItems(roundFlightDTOS);
-//            if (roundFlightDTOS.isEmpty()) {
-//                response.setTotal(0);
-//            } else {
-//                response.setTotal(onewayResults.getTotal());
-//            }
-//            return ResponseEntity.ok(response);
-//        }
-//
-//
-//        OnewaySearchResponseDTO response = new OnewaySearchResponseDTO();
-//        response.setTotal(onewayResults.getTotal());
-//        List<FlightDTO> flightDTOList = flightMapper.toDtoList(onewayResults.getItems());
-//
-//        response.setItems(flightDTOList);
-
-
     }
 }

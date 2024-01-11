@@ -6,7 +6,7 @@ import org.openapitools.model.PageRequestDTO;
 
 public class ApiUtil {
     public static PageRequestDTO normalizePageRequest(PageRequestDTO pageRequestDTO) {
-        if (pageRequestDTO == null){
+        if (pageRequestDTO == null) {
             pageRequestDTO = new PageRequestDTO();
         }
         if (pageRequestDTO.getOrder() == null) {
