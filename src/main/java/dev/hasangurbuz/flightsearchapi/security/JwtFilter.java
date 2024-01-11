@@ -1,11 +1,16 @@
 package dev.hasangurbuz.flightsearchapi.security;
 
+import dev.hasangurbuz.flightsearchapi.api.ApiExceptionHandler;
+import dev.hasangurbuz.flightsearchapi.security.service.impl.JwtService;
+import dev.hasangurbuz.flightsearchapi.security.service.impl.UserDetailServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,10 +23,11 @@ import java.io.IOException;
 @Component
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
+    private Logger logger = LoggerFactory.getLogger(ApiExceptionHandler.class);
 
     private final String JWT_HEADER = "Authorization";
     private final JwtService jwtService;
-    private final UserDetailService userDetailsService;
+    private final UserDetailServiceImpl userDetailsService;
     private String token;
 
     @Override
@@ -51,15 +57,15 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         UserDetails userDetails = null;
-        boolean isTokenValid = false;
 
         token = token.substring(7);
 
         try {
-            String username = jwtService.extractUsername(token);
+            String username = jwtService.extractSubject(token);
             userDetails = userDetailsService.loadUserByUsername(username);
             jwtService.validateToken(token, userDetails.getUsername());
         } catch (Exception ex) {
+            logger.error(ex.getMessage());
             filterChain.doFilter(request, response);
             return;
         }

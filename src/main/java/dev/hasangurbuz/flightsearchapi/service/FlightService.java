@@ -14,6 +14,7 @@ public interface FlightService {
     PagedResult<Flight> search(Airport departureAirport,
                                Airport arrivalAirport,
                                LocalDate departureDate,
+                               LocalDate returnDate,
                                PageRequestDTO pageRequest);
 
 }

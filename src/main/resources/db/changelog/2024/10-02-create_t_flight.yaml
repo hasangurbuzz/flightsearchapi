@@ -19,31 +19,42 @@ databaseChangeLog:
                   constraints:
                     primaryKey: true
                     primaryKeyName: pk_t_flight
+                    nullable: false
               - column:
                   name: departure_airport_id
                   type: BIGINT
+                  constraints:
+                    nullable: false
               - column:
                   name: arrival_airport_id
                   type: BIGINT
+                  constraints:
+                    nullable: false
               - column:
                   name: departure_date
                   type: TIMESTAMP
+                  constraints:
+                    nullable: false
               - column:
                   name: return_date
                   type: TIMESTAMP
+                  constraints:
+                    nullable: true
               - column:
                   name: price
                   type: NUMERIC(10,2)
+                  constraints:
+                    nullable: false
 
         - addForeignKeyConstraint:
-            constraintName: fk_departure_id_on_airport
+            constraintName: fk_flight_departure__airport_id
             baseTableName: t_flight
             baseColumnNames: departure_airport_id
             referencedTableName: t_airport
             referencedColumnNames: id
 
         - addForeignKeyConstraint:
-            constraintName: fk_arrival_id_on_airport
+            constraintName: fk_flight_arrival__airport_id
             baseTableName: t_flight
             baseColumnNames: arrival_airport_id
             referencedTableName: t_airport

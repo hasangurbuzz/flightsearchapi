@@ -1,8 +1,8 @@
 package dev.hasangurbuz.flightsearchapi.api.controller;
 
-import dev.hasangurbuz.flightsearchapi.security.JwtService;
-import dev.hasangurbuz.flightsearchapi.security.Role;
-import dev.hasangurbuz.flightsearchapi.security.User;
+import dev.hasangurbuz.flightsearchapi.security.service.impl.JwtService;
+import dev.hasangurbuz.flightsearchapi.security.model.Role;
+import dev.hasangurbuz.flightsearchapi.security.model.User;
 import lombok.RequiredArgsConstructor;
 import org.openapitools.api.AuthApi;
 import org.openapitools.model.AuthLoginRequestDTO;
@@ -13,15 +13,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
 import java.time.ZoneOffset;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -41,7 +37,7 @@ public class AuthApiController implements AuthApi {
         );
 
         User user = (User) authenticate.getPrincipal();
-        Role role = (Role) authenticate.getAuthorities().stream().findFirst().get();
+        Role role = user.getRole();
         RoleDTO roleDTO = new RoleDTO();
         roleDTO.setName(RoleDTO.NameEnum.fromValue(role.getName().name()));
 

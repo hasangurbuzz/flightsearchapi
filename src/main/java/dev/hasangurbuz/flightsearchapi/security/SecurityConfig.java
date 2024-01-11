@@ -1,13 +1,11 @@
 package dev.hasangurbuz.flightsearchapi.security;
 
+import dev.hasangurbuz.flightsearchapi.security.service.impl.UserDetailServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -22,8 +20,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
-    private final UserDetailService userDetailService;
+    private final UserDetailServiceImpl userDetailServiceImpl;
     private final JwtFilter jwtFilter;
+    private final AccessDenyHandler accessDenyHandler;
+    private final AuthEntryPoint authEntryPoint;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -31,11 +31,17 @@ public class SecurityConfig {
                 csrf().disable()
                 .authorizeHttpRequests()
                 .requestMatchers("/auth/login").permitAll()
+                .requestMatchers("/airports/create").hasAuthority("WRITE")
+                .requestMatchers("/flights/create").hasAuthority("WRITE")
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling()
+                .authenticationEntryPoint(authEntryPoint)
+                .accessDeniedHandler(accessDenyHandler)
+                .and()
                 .build();
 
     }
@@ -43,10 +49,10 @@ public class SecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http,
                                                        BCryptPasswordEncoder bCryptPasswordEncoder,
-                                                       UserDetailService userDetailService)
+                                                       UserDetailServiceImpl userDetailServiceImpl)
             throws Exception {
         return http.getSharedObject(AuthenticationManagerBuilder.class)
-                .userDetailsService(userDetailService)
+                .userDetailsService(userDetailServiceImpl)
                 .passwordEncoder(bCryptPasswordEncoder)
                 .and()
                 .build();

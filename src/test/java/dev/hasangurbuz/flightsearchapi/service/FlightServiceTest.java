@@ -33,22 +33,22 @@ class FlightServiceTest {
     FlightService flightService;
     List<Flight> flightList;
 
-    @BeforeEach
-    void init() {
-        flightService = new FlightServiceImpl(flightRepository, jpaQueryFactory);
-        flightList = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            Flight flight = new Flight();
-            flight.setId(Long.valueOf(i));
-            flight.setPrice(BigDecimal.TEN);
-            flight.setArrivalAirport(new Airport());
-            flight.setDepartureAirport(new Airport());
-            flight.setDepartureDate(OffsetDateTime.now());
-            flight.setReturnDate(OffsetDateTime.now());
-            flightList.add(flight);
-        }
-
-    }
+//    @BeforeEach
+//    void init() {
+//        flightService = new FlightServiceImpl(flightRepository, jpaQueryFactory);
+//        flightList = new ArrayList<>();
+//        for (int i = 0; i < 10; i++) {
+//            Flight flight = new Flight();
+//            flight.setId(Long.valueOf(i));
+//            flight.setPrice(BigDecimal.TEN);
+//            flight.setArrivalAirport(new Airport());
+//            flight.setDepartureAirport(new Airport());
+//            flight.setDepartureDate(OffsetDateTime.now());
+//            flight.setReturnDate(OffsetDateTime.now());
+//            flightList.add(flight);
+//        }
+//
+//    }
 
     @Test
     void create() {

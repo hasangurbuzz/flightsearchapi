@@ -1,34 +1,25 @@
-package dev.hasangurbuz.flightsearchapi.security;
+package dev.hasangurbuz.flightsearchapi.security.model;
 
-import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
 import java.util.Set;
 
+@Getter
 @Setter
-@AllArgsConstructor
 public class User implements UserDetails {
 
     private String username;
     private String password;
     private Role role;
+    private Set<GrantedAuthority> authorities;
+
 
     @Override
-    public Set<Role> getAuthorities() {
-        return Set.of(role);
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public String getUsername() {
-        return username;
+    public Set<GrantedAuthority> getAuthorities() {
+        return authorities;
     }
 
     @Override

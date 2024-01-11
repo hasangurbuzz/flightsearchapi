@@ -4,9 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.Date;
 
 @Entity
 @Table(name = "t_flight")
@@ -20,20 +18,22 @@ public class Flight {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "departure_airport_id", nullable = false)
-    private Airport departureAirport;
+    @JoinColumn(name = "origin_airport_id", nullable = false)
+    private Airport origin;
 
     @ManyToOne
-    @JoinColumn(name = "arrival_airport_id", nullable = false)
-    private Airport arrivalAirport;
+    @JoinColumn(name = "destination_airport_id", nullable = false)
+    private Airport destination;
 
-    @Column(name = "departure_date")
+    @Column(name = "departure_date", nullable = false)
     private OffsetDateTime departureDate;
 
-    @Column(name = "return_date")
+    @Column(name = "return_date", nullable = true)
     private OffsetDateTime returnDate;
 
-    @Column(name = "price")
-    private BigDecimal price;
+    @OneToOne
+    @JoinColumn(name = "price_id", nullable = false)
+    private Price price;
+
 
 }

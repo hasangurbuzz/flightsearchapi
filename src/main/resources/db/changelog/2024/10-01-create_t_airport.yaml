@@ -19,8 +19,12 @@ databaseChangeLog:
                   constraints:
                     primaryKey: true
                     primaryKeyName: pk_t_airport
+                    nullable: false
               - column:
                   name: city
-                  type: VARCHAR
+                  type: NVARCHAR
+                  constraints:
+                    nullable: false
+
 
 

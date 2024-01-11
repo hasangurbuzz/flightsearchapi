@@ -1,12 +1,11 @@
 package dev.hasangurbuz.flightsearchapi.mapper;
 
 import dev.hasangurbuz.flightsearchapi.domain.Flight;
+import dev.hasangurbuz.flightsearchapi.helper.DateHelper;
 import lombok.RequiredArgsConstructor;
-import org.openapitools.model.AirportDTO;
-import org.openapitools.model.FlightDTO;
+import org.openapitools.model.*;
 import org.springframework.stereotype.Component;
 
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,16 +14,18 @@ import java.util.List;
 public class FlightMapper {
 
     private final AirportMapper airportMapper;
+    private final PriceMapper priceMapper;
+
 
     public FlightDTO toDto(Flight flight) {
         FlightDTO dto = new FlightDTO();
-        AirportDTO departureAirport = airportMapper.toDto(flight.getDepartureAirport());
-        AirportDTO arrivalAirport = airportMapper.toDto(flight.getArrivalAirport());
-        dto.setId(flight.getId());
-        dto.setDepartureAirport(departureAirport);
-        dto.setArrivalAirport(arrivalAirport);
-        dto.setPrice(flight.getPrice());
+        AirportDTO departureAirport = airportMapper.toDto(flight.getOrigin());
+        AirportDTO arrivalAirport = airportMapper.toDto(flight.getDestination());
+        PriceDTO price = priceMapper.toDto(flight.getPrice());
+        dto.setOrigin(departureAirport);
+        dto.setDestination(arrivalAirport);
         dto.setDepartureDate(flight.getDepartureDate());
+        dto.setPrice(price);
         return dto;
 
     }
@@ -42,4 +43,6 @@ public class FlightMapper {
 
         return dtoList;
     }
+
+
 }

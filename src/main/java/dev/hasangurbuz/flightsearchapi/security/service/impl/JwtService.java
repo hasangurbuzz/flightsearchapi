@@ -1,5 +1,6 @@
-package dev.hasangurbuz.flightsearchapi.security;
+package dev.hasangurbuz.flightsearchapi.security.service.impl;
 
+import dev.hasangurbuz.flightsearchapi.security.service.AbstractJwtService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -12,7 +13,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Component
-public class JwtService {
+public class JwtService extends AbstractJwtService {
     @Value("${jwt.secret}")
     private String secret;
 
@@ -24,7 +25,8 @@ public class JwtService {
         return createToken(claims, username);
     }
 
-    private String createToken(Map<String, Object> claims, String subject) {
+    @Override
+    protected String createToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(subject)
@@ -34,8 +36,9 @@ public class JwtService {
                 .compact();
     }
 
+    @Override
     public boolean validateToken(String token, String username) {
-        String tokenUsername = extractUsername(token);
+        String tokenUsername = extractSubject(token);
         if (!tokenUsername.equals(username)) {
             return false;
         }
@@ -45,25 +48,28 @@ public class JwtService {
         return true;
     }
 
-    public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
+    @Override
+    public String extractSubject(String token) {
+        return super.extractSubject(token);
     }
 
+    @Override
     public Date extractExpiration(String token) {
-        return extractClaim(token, Claims::getExpiration);
+        return super.extractExpiration(token);
     }
 
+    @Override
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = extractAllClaims(token);
-        return claimsResolver.apply(claims);
+        return super.extractClaim(token, claimsResolver);
     }
 
-    private Claims extractAllClaims(String token) {
-
+    @Override
+    protected Claims extractAllClaims(String token) {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
     }
 
-    private Boolean isTokenExpired(String token) {
+    @Override
+    protected Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 }

@@ -1,0 +1,36 @@
+databaseChangeLog:
+  - changeSet:
+      id: 0
+      author: hasan
+      changes:
+        - renameColumn:
+            tableName: t_flight
+            oldColumnName: arrival_airport_id
+            newColumnName: destination_airport_id
+
+        - renameColumn:
+            tableName: t_flight
+            oldColumnName: departure_airport_id
+            newColumnName: origin_airport_id
+
+        - dropForeignKeyConstraint:
+            baseTableName: t_flight
+            constraintName: fk_flight_departure__airport_id
+
+        - dropForeignKeyConstraint:
+            baseTableName: t_flight
+            constraintName: fk_flight_arrival__airport_id
+
+        - addForeignKeyConstraint:
+            constraintName: fk_flight_origin__airport_id
+            baseTableName: t_flight
+            baseColumnNames: origin_airport_id
+            referencedTableName: t_airport
+            referencedColumnNames: id
+
+        - addForeignKeyConstraint:
+            constraintName: fk_flight_destination__airport_id
+            baseTableName: t_flight
+            baseColumnNames: destination_airport_id
+            referencedTableName: t_airport
+            referencedColumnNames: id

@@ -21,9 +21,11 @@ public class AirportApiController implements AirportApi {
     private final AirportService airportService;
     private final AirportMapper airportMapper;
 
+
     @Transactional(readOnly = true)
     @Override
     public ResponseEntity<List<AirportDTO>> get() {
+        // TODO SEARCH API
         List<Airport> airports = airportService.getAll();
         return ResponseEntity.ok(airportMapper.toDtoList(airports));
     }

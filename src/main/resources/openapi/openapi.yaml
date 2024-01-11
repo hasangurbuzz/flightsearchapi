@@ -11,6 +11,8 @@ paths:
         - flight
       summary: Search flights
       operationId: flight_search
+      security:
+        - bearerAuth: []
       requestBody:
         required: true
         content:
@@ -49,6 +51,8 @@ paths:
         - flight
       summary: Create flight
       operationId: flight_create
+      security:
+        - bearerAuth: []
       requestBody:
         required: true
         content:
@@ -81,7 +85,8 @@ paths:
         - airport
       summary: Get all airports
       operationId: airport_get
-
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: Success
@@ -110,6 +115,8 @@ paths:
         - airport
       summary: Create airport
       operationId: airport_create
+      security:
+        - bearerAuth: []
       requestBody:
         required: true
         content:
@@ -177,7 +184,6 @@ components:
         - departureAirportId
         - arrivalAirportId
         - departureDate
-        - returnDate
       properties:
         departureAirportId:
           type: integer
@@ -192,8 +198,7 @@ components:
           type: string
           format: date-time
         price:
-          type: number
-          format: double
+          $ref: '#/components/schemas/Price'
 
     AirportCreateRequest:
       type: object
@@ -226,7 +231,20 @@ components:
         pageRequest:
           $ref: '#/components/schemas/PageRequest'
 
-    OnewaySearchResponse:
+    Flight:
+      type: object
+      properties:
+        origin:
+          $ref: '#/components/schemas/Airport'
+        destination:
+          $ref: '#/components/schemas/Airport'
+        departureDate:
+          type: string
+          format: date-time
+        price:
+          $ref: '#/components/schemas/Price'
+
+    FlightSearchResponse:
       type: object
       properties:
         total:
@@ -234,29 +252,40 @@ components:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/Flight'
+            $ref: '#/components/schemas/Journey'
 
-    Flight:
+    Journey:
       type: object
       properties:
         id:
           type: integer
           format: int64
-        departureAirport:
-          $ref: '#/components/schemas/Airport'
-        arrivalAirport:
-          $ref: '#/components/schemas/Airport'
-        departureDate:
-          type: string
-          format: date-time
         price:
+          $ref: '#/components/schemas/Price'
+        type:
+          $ref: '#/components/schemas/JourneyType'
+        outbound:
+          $ref: '#/components/schemas/Flight'
+        inbound:
+          $ref: '#/components/schemas/Flight'
+
+
+    JourneyType:
+      type: string
+      enum: [OUTBOUND, ROUND_TRIP]
+
+    Price:
+      type: object
+      properties:
+        amount:
           type: number
           format: double
+        currency:
+          $ref: '#/components/schemas/Currency'
 
-    FlightSearchResponse:
-      oneOf:
-        - $ref: '#/components/schemas/OnewaySearchResponse'
-        - $ref: '#/components/schemas/RoundSearchResponse'
+    Currency:
+      type: string
+      enum: [TRY, USD]
 
     Airport:
       type: object
@@ -266,24 +295,6 @@ components:
           format: int64
         city:
           type: string
-
-    RoundSearchResponse:
-      type: object
-      properties:
-        total:
-          type: integer
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/RoundFlight'
-
-    RoundFlight:
-      type: object
-      properties:
-        departureFlight:
-          $ref: '#/components/schemas/Flight'
-        returnFlight:
-          $ref: '#/components/schemas/Flight'
 
     AuthLoginRequest:
       type: object
@@ -364,4 +375,10 @@ components:
     ErrorCode:
       type: string
       enum: [INVALID_INPUT, NOT_FOUND, SERVER_ERROR, AUTH_ERROR, FORBIDDEN]
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
 

@@ -1,8 +1,7 @@
-package dev.hasangurbuz.flightsearchapi.security;
+package dev.hasangurbuz.flightsearchapi.security.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Set;
