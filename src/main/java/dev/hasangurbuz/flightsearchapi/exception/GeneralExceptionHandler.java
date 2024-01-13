@@ -1,6 +1,5 @@
 package dev.hasangurbuz.flightsearchapi.exception;
 
-import dev.hasangurbuz.flightsearchapi.api.ApiExceptionHandler;
 import org.openapitools.model.ErrorCodeDTO;
 import org.openapitools.model.ErrorDTO;
 import org.slf4j.Logger;
@@ -12,7 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GeneralExceptionHandler {
 
-    private Logger logger = LoggerFactory.getLogger(ApiExceptionHandler.class);
+    private Logger logger = LoggerFactory.getLogger(GeneralExceptionHandler.class);
 
 
     @ExceptionHandler(Exception.class)

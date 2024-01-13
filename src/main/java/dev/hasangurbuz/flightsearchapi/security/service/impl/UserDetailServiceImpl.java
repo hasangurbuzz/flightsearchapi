@@ -12,7 +12,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 @Service
 public class UserDetailServiceImpl implements UserDetailsService {
@@ -47,9 +50,8 @@ public class UserDetailServiceImpl implements UserDetailsService {
         }
 
 
-
         Set<GrantedAuthority> authorityList = new HashSet<>();
-        authorityList.add(new SimpleGrantedAuthority("ROLE_"+user.getRole().getAuthority()));
+        authorityList.add(new SimpleGrantedAuthority("ROLE_" + user.getRole().getAuthority()));
         for (Permission permission : user.getRole().getPermissions()) {
             authorityList.add(new SimpleGrantedAuthority(permission.name()));
         }

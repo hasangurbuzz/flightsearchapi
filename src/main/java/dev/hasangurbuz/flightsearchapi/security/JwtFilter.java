@@ -1,6 +1,6 @@
 package dev.hasangurbuz.flightsearchapi.security;
 
-import dev.hasangurbuz.flightsearchapi.api.ApiExceptionHandler;
+import dev.hasangurbuz.flightsearchapi.security.model.JwtAuthenticationToken;
 import dev.hasangurbuz.flightsearchapi.security.service.impl.JwtService;
 import dev.hasangurbuz.flightsearchapi.security.service.impl.UserDetailServiceImpl;
 import jakarta.servlet.FilterChain;
@@ -9,9 +9,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -23,8 +20,6 @@ import java.io.IOException;
 @Component
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
-    private Logger logger = LoggerFactory.getLogger(ApiExceptionHandler.class);
-
     private final String JWT_HEADER = "Authorization";
     private final JwtService jwtService;
     private final UserDetailServiceImpl userDetailsService;
@@ -32,7 +27,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        if (request.getRequestURI().equals("/api/auth/login")){
+        if (request.getRequestURI().equals("/api/auth/login")) {
             return true;
         }
 
@@ -60,21 +55,12 @@ public class JwtFilter extends OncePerRequestFilter {
 
         token = token.substring(7);
 
-        try {
-            String username = jwtService.extractSubject(token);
-            userDetails = userDetailsService.loadUserByUsername(username);
-            jwtService.validateToken(token, userDetails.getUsername());
-        } catch (Exception ex) {
-            logger.error(ex.getMessage());
-            filterChain.doFilter(request, response);
-            return;
-        }
+        String username = jwtService.extractSubject(token);
+        userDetails = userDetailsService.loadUserByUsername(username);
 
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                userDetails,
-                null,
-                userDetails.getAuthorities()
-        );
+        jwtService.validateToken(token, userDetails.getUsername());
+
+        JwtAuthenticationToken authenticationToken = new JwtAuthenticationToken(userDetails);
         authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);

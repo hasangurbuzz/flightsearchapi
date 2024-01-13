@@ -25,8 +25,7 @@ public class AuthEntryPoint implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         ErrorDTO error = new ErrorDTO();
 
-        // TODO unauthorized
-        error.setCode(ErrorCodeDTO.FORBIDDEN);
+        error.setCode(ErrorCodeDTO.UNAUTHORIZED);
         error.setCause(authException.getMessage());
 
         response.setStatus(HttpStatus.UNAUTHORIZED.value());

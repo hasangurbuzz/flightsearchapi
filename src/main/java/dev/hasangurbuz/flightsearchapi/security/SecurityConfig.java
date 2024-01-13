@@ -1,5 +1,6 @@
 package dev.hasangurbuz.flightsearchapi.security;
 
+import dev.hasangurbuz.flightsearchapi.security.model.Operation;
 import dev.hasangurbuz.flightsearchapi.security.service.impl.UserDetailServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +14,12 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static dev.hasangurbuz.flightsearchapi.security.model.Operation.*;
 
 @EnableWebSecurity
 @Configuration
@@ -31,9 +38,8 @@ public class SecurityConfig {
                 csrf().disable()
                 .authorizeHttpRequests()
                 .requestMatchers("/auth/login").permitAll()
-                .requestMatchers("/airports/create").hasAuthority("WRITE")
-                .requestMatchers("/flights/create").hasAuthority("WRITE")
-                .anyRequest().authenticated()
+                .requestMatchers(authorizedPaths().toArray(new AntPathRequestMatcher[0])).hasAuthority("WRITE")
+                .anyRequest().hasAuthority("READ")
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
@@ -56,6 +62,18 @@ public class SecurityConfig {
                 .passwordEncoder(bCryptPasswordEncoder)
                 .and()
                 .build();
+    }
+
+    @Bean
+    public List<AntPathRequestMatcher> authorizedPaths() {
+        List<AntPathRequestMatcher> authorizedPaths = new ArrayList<>();
+        List<Operation> authorizedOperations = List.of(CREATE, UPDATE, DELETE);
+        for (Operation op : authorizedOperations) {
+            String path = "/**/" + op.name().toLowerCase();
+            AntPathRequestMatcher requestMatcher = new AntPathRequestMatcher(path);
+            authorizedPaths.add(requestMatcher);
+        }
+        return authorizedPaths;
     }
 
 

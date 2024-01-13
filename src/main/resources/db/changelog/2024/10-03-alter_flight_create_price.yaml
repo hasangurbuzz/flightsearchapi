@@ -4,12 +4,12 @@ databaseChangeLog:
       author: hasan
       changes:
         - createSequence:
-              sequenceName: t_price_seq
-              dataType: BIGINT
-              startValue: 1
-              incrementBy: 1
-              cacheSize: 1
-              cycle: false
+            sequenceName: t_price_seq
+            dataType: BIGINT
+            startValue: 1
+            incrementBy: 1
+            cacheSize: 1
+            cycle: false
 
         - createTable:
             tableName: t_price

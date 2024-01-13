@@ -10,16 +10,16 @@ import java.util.List;
 @Component
 public class AirportMapper {
 
-    public AirportDTO toDto(Airport airport){
+    public AirportDTO toDto(Airport airport) {
         AirportDTO dto = new AirportDTO();
         dto.setId(airport.getId());
         dto.setCity(airport.getCity());
         return dto;
     }
 
-    public List<AirportDTO> toDtoList(List<Airport> airports){
+    public List<AirportDTO> toDtoList(List<Airport> airports) {
         List<AirportDTO> dtoList = new ArrayList<>(airports.size());
-        if (airports.isEmpty()){
+        if (airports.isEmpty()) {
             return dtoList;
         }
 

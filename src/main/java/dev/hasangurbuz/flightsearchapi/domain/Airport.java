@@ -1,7 +1,6 @@
 package dev.hasangurbuz.flightsearchapi.domain;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

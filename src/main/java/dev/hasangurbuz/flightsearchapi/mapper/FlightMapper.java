@@ -1,7 +1,7 @@
 package dev.hasangurbuz.flightsearchapi.mapper;
 
+import dev.hasangurbuz.flightsearchapi.domain.Airport;
 import dev.hasangurbuz.flightsearchapi.domain.Flight;
-import dev.hasangurbuz.flightsearchapi.helper.DateHelper;
 import lombok.RequiredArgsConstructor;
 import org.openapitools.model.*;
 import org.springframework.stereotype.Component;
@@ -44,5 +44,43 @@ public class FlightMapper {
         return dtoList;
     }
 
+    public JourneyDTO toJourney(Flight flight) {
+        boolean isOneway = flight.getReturnDate() == null;
+        JourneyDTO journey = new JourneyDTO();
+        PriceDTO price = new PriceDTO();
+        JourneyTypeDTO journeyType = isOneway ? JourneyTypeDTO.OUTBOUND : JourneyTypeDTO.ROUND_TRIP;
+
+        price.setCurrency(flight.getPrice().getCurrency().name());
+        price.setAmount(flight.getPrice().getAmount());
+
+        journey.setOutbound(toDto(flight));
+        journey.setId(flight.getId());
+        journey.setPrice(price);
+        journey.setType(journeyType);
+
+        if (!isOneway) {
+            Airport destination = flight.getDestination();
+            flight.setDepartureDate(flight.getReturnDate());
+            flight.setDestination(flight.getOrigin());
+            flight.setOrigin(destination);
+            journey.setInbound(toDto(flight));
+            journey.getPrice().setAmount(price.getAmount().add(flight.getPrice().getAmount()));
+        }
+        return journey;
+    }
+
+    public List<JourneyDTO> toJourneyList(List<Flight> flightList) {
+        List<JourneyDTO> dtoList = new ArrayList<>(flightList.size());
+        if (flightList.isEmpty()) {
+            return dtoList;
+        }
+
+        for (Flight flight : flightList) {
+            JourneyDTO dto = toJourney(flight);
+            dtoList.add(dto);
+        }
+
+        return dtoList;
+    }
 
 }

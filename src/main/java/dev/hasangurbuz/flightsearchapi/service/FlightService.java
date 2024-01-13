@@ -1,20 +1,20 @@
 package dev.hasangurbuz.flightsearchapi.service;
 
-import dev.hasangurbuz.flightsearchapi.domain.Airport;
 import dev.hasangurbuz.flightsearchapi.domain.Flight;
-import org.openapitools.model.PageRequestDTO;
-import org.springframework.data.domain.PageRequest;
-
-import java.time.LocalDate;
-import java.util.Date;
+import org.openapitools.model.FlightRequestDTO;
+import org.openapitools.model.FlightSearchRequestDTO;
 
 public interface FlightService {
-    Flight create(Flight flight);
+    Flight create(FlightRequestDTO flightRequest);
 
-    PagedResult<Flight> search(Airport departureAirport,
-                               Airport arrivalAirport,
-                               LocalDate departureDate,
-                               LocalDate returnDate,
-                               PageRequestDTO pageRequest);
+    PagedResult<Flight> search(FlightSearchRequestDTO searchRequest);
+
+    Flight findById(Long id);
+
+    Flight update(Long id, FlightRequestDTO flightRequest);
+
+    boolean existingFlightByAirportId(Long originId);
+
+    void delete(Flight flight);
 
 }

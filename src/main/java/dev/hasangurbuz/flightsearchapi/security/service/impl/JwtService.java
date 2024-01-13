@@ -2,6 +2,7 @@ package dev.hasangurbuz.flightsearchapi.security.service.impl;
 
 import dev.hasangurbuz.flightsearchapi.security.service.AbstractJwtService;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -65,7 +66,11 @@ public class JwtService extends AbstractJwtService {
 
     @Override
     protected Claims extractAllClaims(String token) {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+        try {
+            return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+        } catch (JwtException e) {
+            throw new JwtException("Token is not valid");
+        }
     }
 
     @Override

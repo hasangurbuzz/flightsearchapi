@@ -12,7 +12,7 @@ paths:
       summary: Search flights
       operationId: flight_search
       security:
-        - bearerAuth: []
+        - bearerAuth: [ ]
       requestBody:
         required: true
         content:
@@ -27,19 +27,26 @@ paths:
               schema:
                 $ref: '#/components/schemas/FlightSearchResponse'
         '400':
-          description: Error
+          description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-        '404':
-          description: Not found
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+        '403':
+          description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
         '500':
-          description: Error
+          description: Server Error
           content:
             application/json:
               schema:
@@ -52,58 +59,252 @@ paths:
       summary: Create flight
       operationId: flight_create
       security:
-        - bearerAuth: []
+        - bearerAuth: [ ]
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/FlightCreateRequest'
+              $ref: '#/components/schemas/FlightRequest'
       responses:
         '200':
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Flight'
+                $ref: '#/components/schemas/Journey'
         '400':
-          description: Error
+          description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-        '500':
-          description: Error
+        '401':
+          description: Unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
 
-  /airports:
-    get:
+        '403':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /flights/{flightId}/update:
+    post:
       tags:
-        - airport
-      summary: Get all airports
-      operationId: airport_get
+        - flight
+      summary: Update flight
+      operationId: flight_update
       security:
-        - bearerAuth: []
+        - bearerAuth: [ ]
+      parameters:
+        - name: flightId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FlightRequest'
       responses:
         '200':
           description: Success
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Airport'
+                $ref: '#/components/schemas/Journey'
         '400':
-          description: Error
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
         '500':
-          description: Error
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+
+  /flights/{flightId}:
+    get:
+      tags:
+        - flight
+      summary: Get flight by id
+      operationId: flight_getById
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: flightId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Journey'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /flights/{flightId}/delete:
+    get:
+      tags:
+        - flight
+      summary: Delete flight by id
+      operationId: flight_delete
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: flightId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Success
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /airports/search:
+    post:
+      tags:
+        - airport
+      summary: Search airport
+      operationId: airport_search
+      security:
+        - bearerAuth: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AirportSearchRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AirportSearchResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
           content:
             application/json:
               schema:
@@ -116,13 +317,13 @@ paths:
       summary: Create airport
       operationId: airport_create
       security:
-        - bearerAuth: []
+        - bearerAuth: [ ]
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AirportCreateRequest'
+              $ref: '#/components/schemas/AirportRequest'
       responses:
         '200':
           description: Success
@@ -131,13 +332,190 @@ paths:
               schema:
                 $ref: '#/components/schemas/Airport'
         '400':
-          description: Error
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+        '403':
+          description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
         '500':
-          description: Error
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /airports/{airportId}/update:
+    post:
+      tags:
+        - airport
+      summary: Update airport
+      operationId: airport_update
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: airportId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AirportRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Airport'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /airports/{airportId}:
+    get:
+      tags:
+        - airport
+      summary: Get airport by id
+      operationId: airport_getById
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: airportId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Airport'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /airports/{airportId}/delete:
+    get:
+      tags:
+        - airport
+      summary: Delete airport by id
+      operationId: airport_delete
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: airportId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Success
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
           content:
             application/json:
               schema:
@@ -163,13 +541,25 @@ paths:
               schema:
                 $ref: '#/components/schemas/Token'
         '400':
-          description: Error
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
         '500':
-          description: Error
+          description: Server Error
           content:
             application/json:
               schema:
@@ -178,17 +568,18 @@ paths:
 
 components:
   schemas:
-    FlightCreateRequest:
+    FlightRequest:
       type: object
       required:
-        - departureAirportId
-        - arrivalAirportId
+        - originAirportId
+        - destinationAirportId
         - departureDate
+        - price
       properties:
-        departureAirportId:
+        originAirportId:
           type: integer
           format: int64
-        arrivalAirportId:
+        destinationAirportId:
           type: integer
           format: int64
         departureDate:
@@ -200,7 +591,7 @@ components:
         price:
           $ref: '#/components/schemas/Price'
 
-    AirportCreateRequest:
+    AirportRequest:
       type: object
       required:
         - city
@@ -211,15 +602,15 @@ components:
     FlightSearchRequest:
       type: object
       required:
-        - departureAirportId
-        - arrivalAirportId
+        - originAirportId
+        - destinationAirportId
         - departureDate
       properties:
-        departureAirportId:
+        originAirportId:
           type: integer
           format: int64
           nullable: false
-        arrivalAirportId:
+        destinationAirportId:
           type: integer
           format: int64
         departureDate:
@@ -272,7 +663,7 @@ components:
 
     JourneyType:
       type: string
-      enum: [OUTBOUND, ROUND_TRIP]
+      enum: [ OUTBOUND, ROUND_TRIP ]
 
     Price:
       type: object
@@ -281,11 +672,8 @@ components:
           type: number
           format: double
         currency:
-          $ref: '#/components/schemas/Currency'
+          type: string
 
-    Currency:
-      type: string
-      enum: [TRY, USD]
 
     Airport:
       type: object
@@ -295,6 +683,24 @@ components:
           format: int64
         city:
           type: string
+
+    AirportSearchRequest:
+      type: object
+      properties:
+        term:
+          type: string
+        pageRequest:
+          $ref: '#/components/schemas/PageRequest'
+
+    AirportSearchResponse:
+      type: object
+      properties:
+        total:
+          type: integer
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Airport'
 
     AuthLoginRequest:
       type: object
@@ -323,7 +729,7 @@ components:
       properties:
         name:
           type: string
-          enum: [ADMIN, STANDARD]
+          enum: [ ADMIN, STANDARD ]
         permissions:
           type: array
           items:
@@ -331,7 +737,7 @@ components:
 
     Permission:
       type: string
-      enum: [READ, WRITE]
+      enum: [ READ, WRITE ]
 
     PageRequest:
       type: object
@@ -355,12 +761,12 @@ components:
 
     OrderSort:
       type: string
-      enum: [PRICE, DATE]
+      enum: [ PRICE, DATE, CITY ]
       default: DATE
 
     OrderDirection:
       type: string
-      enum: [ASC, DESC]
+      enum: [ ASC, DESC ]
       default: ASC
 
 
@@ -374,7 +780,14 @@ components:
 
     ErrorCode:
       type: string
-      enum: [INVALID_INPUT, NOT_FOUND, SERVER_ERROR, AUTH_ERROR, FORBIDDEN]
+      enum: [
+        INVALID_INPUT,
+        NOT_FOUND,
+        SERVER_ERROR,
+        AUTH_ERROR,
+        FORBIDDEN,
+        UNAUTHORIZED
+      ]
 
   securitySchemes:
     bearerAuth:

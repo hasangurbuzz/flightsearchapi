@@ -1,5 +1,7 @@
 package dev.hasangurbuz.flightsearchapi.api;
 
+import dev.hasangurbuz.flightsearchapi.exception.ApiException;
+import dev.hasangurbuz.flightsearchapi.exception.ApiExceptionCode;
 import org.openapitools.model.ErrorCodeDTO;
 import org.openapitools.model.ErrorDTO;
 import org.springframework.http.HttpStatus;
@@ -39,7 +41,8 @@ public class ApiExceptionHandler {
     public ResponseEntity<ErrorDTO> handle(BadCredentialsException e) {
         ErrorDTO errorDTO = new ErrorDTO();
         errorDTO.setCode(ErrorCodeDTO.AUTH_ERROR);
-        errorDTO.setCause(e.getMessage());
+        errorDTO.setCause("Not found any user with password");
         return ResponseEntity.badRequest().body(errorDTO);
     }
+
 }
