@@ -57,3 +57,11 @@ cd flightsearchapi
 ```
 mvn spring-boot:run
 ```
+
+### ! Unauthenticated users will be denied by API here is the mock users
+| Username 	| Password 	| Role     	| Permissions 	|
+|----------	|----------	|----------	|-------------	|
+| admin    	| admin    	| ADMIN    	| READ, WRITE 	|
+| user     	| 1234     	| STANDARD 	| READ        	|
+
+#### [If you don't know how to authenticate click to navigate docs](https://github.com/hasangurbuzz/flightsearchapi/blob/master/src/main/resources/openapi/openapi.yaml)
