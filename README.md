@@ -44,13 +44,14 @@ cd flightsearchapi
 #### Required env vars must be set in ``src/main/resources/application.yml``
 #### Also you can create an application.properties file to reference variables.
 
-| Environment Variable 	| Purpose                                              	| Type   	| Required 	|
-|----------------------	|------------------------------------------------------	|--------	|----------	|
-| JWT_SECRET           	| Secret key for signing JWT keys                      	| String 	| True     	|
-| JWT_EXPIRATION       	| JWT expiration time in secs                          	| Long   	| True     	|
-| POSTGRES_DB_NAME     	| App is on default will be looking for PostgreSQL DB. 	| String 	| True     	|
-| POSTGRES_USERNAME    	| PostgreSQL DB username                               	| String 	| True     	|
-| POSTGRES_PASSWORD    	| PostgreSQL DB password                               	| String 	| True     	|
+| Environment Variable 	 | Purpose                                              	 | Type   	   | Required 	|
+|------------------------|-------------------------------------------------------|------------|----------	|
+| JWT_SECRET           	 | Secret key for signing JWT keys                      	 | String 	   | True     	|
+| JWT_EXPIRATION       	 | JWT expiration time in secs                          	 | Long   	   | True     	|
+| POSTGRES_DB_NAME     	 | App is on default will be looking for PostgreSQL DB. 	 | String 	   | True     	|
+| POSTGRES_USERNAME    	 | PostgreSQL DB username                               	 | String 	   | True     	|
+| POSTGRES_PASSWORD    	 | PostgreSQL DB password                               	 | String 	   | True     	|
+| POSTGRES_PORT          | PostgreSQL DB port number                             | String     | True  
 
 #### Then run the project
 
