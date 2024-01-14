@@ -12,7 +12,7 @@ paths:
       summary: Search flights
       operationId: flight_search
       security:
-        - bearerAuth: [ ]
+        - bearerAuth: []
       requestBody:
         required: true
         content:
@@ -59,7 +59,7 @@ paths:
       summary: Create flight
       operationId: flight_create
       security:
-        - bearerAuth: [ ]
+        - bearerAuth: []
       requestBody:
         required: true
         content:
@@ -106,7 +106,7 @@ paths:
       summary: Update flight
       operationId: flight_update
       security:
-        - bearerAuth: [ ]
+        - bearerAuth: []
       parameters:
         - name: flightId
           in: path
@@ -167,7 +167,7 @@ paths:
       summary: Get flight by id
       operationId: flight_getById
       security:
-        - bearerAuth: [ ]
+        - bearerAuth: []
       parameters:
         - name: flightId
           in: path
@@ -221,7 +221,7 @@ paths:
       summary: Delete flight by id
       operationId: flight_delete
       security:
-        - bearerAuth: [ ]
+        - bearerAuth: []
       parameters:
         - name: flightId
           in: path
@@ -271,7 +271,7 @@ paths:
       summary: Search airport
       operationId: airport_search
       security:
-        - bearerAuth: [ ]
+        - bearerAuth: []
       requestBody:
         content:
           application/json:
@@ -317,7 +317,7 @@ paths:
       summary: Create airport
       operationId: airport_create
       security:
-        - bearerAuth: [ ]
+        - bearerAuth: []
       requestBody:
         required: true
         content:
@@ -364,7 +364,7 @@ paths:
       summary: Update airport
       operationId: airport_update
       security:
-        - bearerAuth: [ ]
+        - bearerAuth: []
       parameters:
         - name: airportId
           in: path
@@ -424,7 +424,7 @@ paths:
       summary: Get airport by id
       operationId: airport_getById
       security:
-        - bearerAuth: [ ]
+        - bearerAuth: []
       parameters:
         - name: airportId
           in: path
@@ -478,7 +478,7 @@ paths:
       summary: Delete airport by id
       operationId: airport_delete
       security:
-        - bearerAuth: [ ]
+        - bearerAuth: []
       parameters:
         - name: airportId
           in: path
@@ -663,7 +663,7 @@ components:
 
     JourneyType:
       type: string
-      enum: [ OUTBOUND, ROUND_TRIP ]
+      enum: [OUTBOUND, ROUND_TRIP]
 
     Price:
       type: object
@@ -729,7 +729,7 @@ components:
       properties:
         name:
           type: string
-          enum: [ ADMIN, STANDARD ]
+          enum: [ADMIN, STANDARD]
         permissions:
           type: array
           items:
@@ -737,7 +737,7 @@ components:
 
     Permission:
       type: string
-      enum: [ READ, WRITE ]
+      enum: [READ, WRITE]
 
     PageRequest:
       type: object
@@ -745,9 +745,11 @@ components:
         start:
           type: integer
           default: 0
+          minimum: 0
         limit:
           type: integer
           default: 20
+          minimum: 0
         order:
           $ref: '#/components/schemas/Order'
 
@@ -761,12 +763,12 @@ components:
 
     OrderSort:
       type: string
-      enum: [ PRICE, DATE, CITY ]
+      enum: [PRICE, DATE, CITY]
       default: DATE
 
     OrderDirection:
       type: string
-      enum: [ ASC, DESC ]
+      enum: [ASC, DESC]
       default: ASC
 
 
