@@ -16,6 +16,7 @@ import java.util.List;
 public class MockAirportApiClient implements ApiClient<AirportResponse> {
 
     private final RestTemplate restTemplate;
+    private final String endpoint = "/airports";
 
     @Override
     public List<AirportResponse> fetch(HttpMethod method, String endpoint) {
@@ -34,7 +35,7 @@ public class MockAirportApiClient implements ApiClient<AirportResponse> {
 
     @Override
     public List<AirportResponse> get() {
-        return fetch(HttpMethod.GET, "/airports");
+        return fetch(HttpMethod.GET, endpoint);
     }
 
 }
