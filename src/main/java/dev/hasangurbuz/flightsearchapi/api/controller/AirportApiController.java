@@ -24,6 +24,7 @@ public class AirportApiController implements AirportApi {
     private final AirportMapper airportMapper;
     private final FlightService flightService;
 
+    @Transactional(readOnly = true)
     @Override
     public ResponseEntity<AirportSearchResponseDTO> search(AirportSearchRequestDTO airportSearchRequestDTO) {
         PageRequestDTO pageRequest = ApiUtil.normalizePageRequest(airportSearchRequestDTO.getPageRequest());
@@ -49,18 +50,21 @@ public class AirportApiController implements AirportApi {
         return ResponseEntity.ok(airportMapper.toDto(airport));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public ResponseEntity<AirportDTO> getById(Long airportId) {
         Airport airport = airportService.findById(airportId);
         return ResponseEntity.ok(airportMapper.toDto(airport));
     }
 
+    @Transactional
     @Override
     public ResponseEntity<AirportDTO> update(Long airportId, AirportRequestDTO airportRequestDTO) {
         Airport airport = airportService.update(airportId, airportRequestDTO);
         return ResponseEntity.ok(airportMapper.toDto(airport));
     }
 
+    @Transactional
     @Override
     public ResponseEntity<Void> delete(Long airportId) {
         Airport airport = airportService.findById(airportId);
